@@ -98,21 +98,17 @@ The user lands on the free-trial page and submits their name and WhatsApp number
 
 ### 2. WhatsApp number validation
 
-Before generating the OTP, the backend checks whether the submitted number is actually on WhatsApp. This prevents invalid signups from entering the funnel and improves downstream account quality.
-
-### 3. OTP delivery via WhatsApp
-
-If the number is valid, the system generates a 6-digit OTP with a short expiration window and sends it through a connected WhatsApp instance. The flow also includes:
+Before generating the OTP, the backend checks whether the submitted number is actually on WhatsApp. If the number is valid, the system generates a 6-digit OTP with a short expiration window and sends it through a connected WhatsApp instance. This prevents invalid signups from entering the funnel and improves downstream account quality. The flow also includes:
 
 - resend cooldowns;
 - per-phone attempt limits;
 - additional IP-based rate limiting on sensitive endpoints.
 
-### 4. Verified session token
+### 3. Business details and verified session
 
-After successful OTP verification, the backend issues a temporary signed token so the user can continue onboarding securely without re-verifying the phone number at every step.
+After successful OTP verification, the backend issues a temporary signed token so the user can continue onboarding securely without re-verifying the phone number at every step. At this stage, the flow reveals the remaining company fields and collects the business information needed to provision the trial account.
 
-### 5. Trial provisioning
+### 4. Password setup and final activation
 
 Once the business form is completed, the backend:
 
@@ -123,9 +119,11 @@ Once the business form is completed, the backend:
 - creates the auth user;
 - links the profile to the tenant.
 
-### 6. Final activation
-
 In the final step, the user sets a password and the trial environment is activated. The flow was designed to be resilient, including cleanup logic for partial failures during provisioning.
+
+### 5. Signed-in experience and WhatsApp welcome message
+
+After activation, the user is automatically signed in and redirected into the product. The system also sends a WhatsApp welcome message containing the free-trial limits and a direct access link, making it easier for the user to resume later without friction.
 
 ## Free Trial Rules
 
