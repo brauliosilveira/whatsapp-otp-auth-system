@@ -4,6 +4,8 @@ A production-grade onboarding and identity-verification flow built around WhatsA
 
 This repository is presented as a public portfolio case study for recruiters, hiring managers, and founders evaluating product-minded engineering work. It highlights the product strategy, system design, onboarding UX, and reliability considerations behind the feature, while keeping the full source code private for commercial and security reasons.
 
+📺 **[Watch a 3-minute Video Tour of the Architecture & Flow](#)** *(Add your Loom link here!)*
+
 ## Executive Summary
 
 This project rethinks trial activation as a trust-building onboarding system rather than a basic signup form.
@@ -208,32 +210,56 @@ It also demonstrates a reusable onboarding pattern: verifying real ownership of 
 
 ## Stack
 
-- Nuxt 4
-- Vue 3
-- Supabase Auth
-- Supabase Database
-- Nitro server routes
-- WhatsApp API integration for number validation and OTP delivery
+- **Frontend:** Nuxt 4, Vue 3
+- **Backend:** Nitro server routes
+- **Database & Auth:** Supabase Auth, Supabase Database
+- **Integrations:** WhatsApp API integration for number validation and OTP delivery
+- **Testing:** E2E and unit testing strategies to ensure resilience in the validation path
+- **CI/CD:** Automated deployment pipelines (GitHub Actions)
 
 ## High-Level Architecture
 
-```text
-Landing page / Onboarding wizard
-              |
-              v
-        Nuxt frontend
-              |
-              v
-       Nitro API routes
-              |
-              +--> WhatsApp number validation
-              +--> OTP generation and verification
-              +--> Rate limiting and signed temporary tokens
-              +--> Trial tenant provisioning
-              +--> Final account activation
-              |
-              v
-   Supabase Auth + Database
+```mermaid
+graph TD
+    UI[Landing page / Onboarding wizard] --> Frontend[Nuxt frontend]
+    Frontend --> API[Nitro API routes]
+    
+    API -->|1.| ValidateNum[WhatsApp number validation]
+    API -->|2.| OTP[OTP generation and verification]
+    API -->|3.| RateLimit[Rate limiting & signed temporary tokens]
+    API -->|4.| Provision[Trial tenant provisioning]
+    API -->|5.| Activate[Final account activation]
+    
+    API --> DB[(Supabase Auth + Database)]
+```
+
+## Engineering Sneak Peek
+
+Although the full source code remains private, the snippet below illustrates the clean, type-safe architecture used to manage the OTP verification boundary:
+
+```typescript
+// Example interface representing the core OTP boundary
+export interface OTPValidationResult {
+  isValid: boolean;
+  signedSessionToken?: string;
+  remainingAttempts: number;
+  cooldownEndsAt?: Date;
+  error?: 'EXPIRED' | 'INVALID_CODE' | 'TOO_MANY_ATTEMPTS' | 'NOT_ON_WHATSAPP';
+}
+
+export interface OTPService {
+  /**
+   * Generates and dispatches a secure 6-digit OTP via WhatsApp.
+   * Enforces rate-limiting and verifies presence on WhatsApp.
+   */
+  dispatchVerification(phone: string, ipAddress: string): Promise<void>;
+
+  /**
+   * Validates a user-provided OTP, handling attempt decrements.
+   * On success, issues a temporary signed session for onboarding continuation.
+   */
+  verifyCode(phone: string, code: string): Promise<OTPValidationResult>;
+}
 ```
 
 ## Demo and Media
