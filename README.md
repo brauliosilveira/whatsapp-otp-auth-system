@@ -286,17 +286,41 @@ Avoid committing large video files directly into the repository unless they are 
 
 Use this section as soon as the assets are uploaded to the repository or attached through GitHub-friendly URLs.
 
+Note: the WhatsApp messages shown in the screenshots are in Portuguese because this production flow was built for the Brazilian market.
+
 ### Screenshots
 
 ![Free Trial Landing Page](./media/free-trial-landing-page.png)
 
 ![OTP Step and WhatsApp Code Message](./media/otp-step-and-whatsapp-code-message.png)
 
+WhatsApp message shown in the screenshot, translated to English:
+
+> Hi, John!  
+> Your BOT pra Vender verification code is:  
+> 104903  
+> This code expires in 10 minutes.
+
 ![Additional Business Fields](./media/additional-business-fields.png)
 
 ![Password Creation Step](./media/password-creation-step.png)
 
 ![Signed-In Product State and Welcome Message](./media/signed-in-state-and-welcome-message.png)
+
+WhatsApp welcome message shown in the screenshot, translated to English:
+
+> Hi, John!  
+> Your BOT pra Vender signup was completed successfully.  
+> Your 3-day free trial includes:  
+> 1 WhatsApp instance  
+> 2 lists  
+> 500 contacts  
+> 3 campaigns  
+> 100 sends per day  
+> 500 group or address-book extractions  
+> Access the platform and save this link:  
+> https://app.botpravender.com  
+> If you have any questions, just reply here.
 
 ### Video Demo
 
