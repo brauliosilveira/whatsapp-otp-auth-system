@@ -35,14 +35,51 @@ The core idea is simple but powerful: if the user can receive and confirm a What
 
 - A free-trial landing page optimized for conversion
 - A multi-step onboarding wizard
+- Progressive disclosure of form fields across onboarding steps
 - WhatsApp OTP delivery and verification
 - Number existence validation before OTP generation
 - Temporary signed session flow after OTP validation
 - Automatic company and trial provisioning
 - Password setup and final activation inside the same journey
+- Automatic sign-in and redirect into the product after password creation
+- WhatsApp welcome message with trial limits and access link
 - OTP resend and activation resend flows
 - Abuse-prevention rules such as cooldowns and rate limits
 - Error handling designed for users, without exposing internal implementation details
+
+## Conversion Strategy
+
+This feature was intentionally designed as a step-based onboarding funnel rather than a single long form.
+
+The first screen asks only for:
+
+- name;
+- WhatsApp number.
+
+That matters because shorter forms usually convert better. Instead of asking for every business field upfront, the flow reduces friction at the moment of highest drop-off risk: the first interaction.
+
+Only after the user confirms the OTP sent to their WhatsApp does the system reveal the next step and request the rest of the company information. By then, the user has already invested effort in the process and has proof that the onboarding is real, which increases the likelihood of completion.
+
+The final step asks the user to create and confirm a password. Once completed, the system signs the user in automatically, redirects them into the application, and sends a WhatsApp welcome message with:
+
+- free-trial limits;
+- product access link;
+- a fallback path in case the user forgets the URL later.
+
+This creates a smoother transition from signup to activation and removes an extra login barrier immediately after onboarding.
+
+## Onboarding Psychology
+
+The flow also leverages a simple but effective behavioral principle: once users feel they have already made meaningful progress, they are more likely to continue.
+
+In practice, the onboarding sequence works like this:
+
+- Step 1: a low-friction entry point with just name and WhatsApp;
+- Step 2: real-number verification through WhatsApp OTP;
+- Step 3: completion of the remaining business fields;
+- Step 4: password creation and immediate entry into the system.
+
+That progression helps create momentum. Instead of confronting the user with a heavy form from the beginning, the flow gradually increases commitment after each successful step.
 
 ## Technical Flow
 
@@ -114,6 +151,10 @@ The final activation step is designed so repeated requests do not break account 
 ### Fail safely during provisioning
 
 The flow includes cleanup behavior for partial failures so the system does not leave behind inconsistent trial tenants or orphaned auth records.
+
+### Use step-based progressive disclosure
+
+The onboarding flow collects the smallest possible amount of information first, then reveals the remaining fields only after WhatsApp verification succeeds. This improves conversion while also increasing trust in the submitted identity before asking for deeper account details.
 
 ## Challenges and Trade-Offs
 
@@ -201,9 +242,36 @@ Recommended media structure:
 
 - `Screenshot 1`: free-trial landing page
 - `Screenshot 2`: OTP verification step
-- `Screenshot 3`: business form and provisioning step
-- `Screenshot 4`: final activation state
+- `Screenshot 3`: additional business fields
+- `Screenshot 4`: password creation step
+- `Screenshot 5`: signed-in product state plus welcome WhatsApp message
 - `Video demo`: end-to-end onboarding walkthrough
+
+## Media Hosting and Format Recommendations
+
+For a GitHub portfolio repository, the recommended setup is:
+
+- screenshots stored inside the repository under `./media/`;
+- video hosted as either a GitHub attachment URL or an unlisted YouTube link.
+
+Recommended image format:
+
+- `PNG` for UI screenshots;
+- `WEBP` if you want smaller files with good visual quality.
+
+Recommended image size:
+
+- width between `1440px` and `1600px` for desktop screenshots;
+- around `1080px` width if you are exporting narrower step-focused screens;
+- ideally between `200 KB` and `800 KB` per image.
+
+Recommended video format:
+
+- `MP4`
+- `1280x720`
+- `30s` to `90s`
+
+Avoid committing large video files directly into the repository unless they are very small. For GitHub portfolio purposes, links usually work better than storing the raw video in git.
 
 ## Media Placeholders
 
@@ -213,11 +281,13 @@ Use this section as soon as the assets are uploaded to the repository or attache
 
 ![Free Trial Landing Page](./media/free-trial-landing-page.png)
 
-![WhatsApp OTP Verification](./media/whatsapp-otp-verification.png)
+![OTP Step and WhatsApp Code Message](./media/otp-step-and-whatsapp-code-message.png)
 
-![Business Signup Form](./media/business-signup-form.png)
+![Additional Business Fields](./media/additional-business-fields.png)
 
-![Trial Activation State](./media/trial-activation-state.png)
+![Password Creation Step](./media/password-creation-step.png)
+
+![Signed-In Product State and Welcome Message](./media/signed-in-state-and-welcome-message.png)
 
 ### Video Demo
 
@@ -228,9 +298,10 @@ Use this section as soon as the assets are uploaded to the repository or attache
 ```text
 media/
   free-trial-landing-page.png
-  whatsapp-otp-verification.png
-  business-signup-form.png
-  trial-activation-state.png
+  otp-step-and-whatsapp-code-message.png
+  additional-business-fields.png
+  password-creation-step.png
+  signed-in-state-and-welcome-message.png
 ```
 
 ## About This Repository
