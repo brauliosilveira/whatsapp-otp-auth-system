@@ -235,30 +235,56 @@ graph TD
 
 ## Engineering Sneak Peek
 
-Although the full source code remains private, the snippet below illustrates the clean, type-safe architecture used to manage the OTP verification boundary:
+Although the full source code remains private, the snippet below illustrates how the backend handles the critical moment of dispatching the WhatsApp OTP. 
+
+Notice the emphasis on **rate limiting (abuse prevention)**, **guard clauses**, and **safe error boundaries** (never leaking third-party provider errors to the client).
 
 ```typescript
-// Example interface representing the core OTP boundary
-export interface OTPValidationResult {
-  isValid: boolean;
-  signedSessionToken?: string;
-  remainingAttempts: number;
-  cooldownEndsAt?: Date;
-  error?: 'EXPIRED' | 'INVALID_CODE' | 'TOO_MANY_ATTEMPTS' | 'NOT_ON_WHATSAPP';
-}
+/**
+ * Dispatches a WhatsApp OTP while enforcing rate limits and preventing provider abuse.
+ * Domain logic is kept separate from the HTTP layer to ensure idempotency and testability.
+ */
+export async function dispatchWhatsAppOtp(phone: string, clientIp: string): Promise<void> {
+  // 1. Prevent abuse at the edge: phone-based cooldowns via Redis
+  const rateLimitKey = `otp_cooldown:${phone}`;
+  const isRateLimited = await kvStore.get(rateLimitKey);
+  
+  if (isRateLimited) {
+    throw createError({
+      statusCode: 429,
+      statusMessage: 'Please wait before requesting another code.',
+    });
+  }
 
-export interface OTPService {
-  /**
-   * Generates and dispatches a secure 6-digit OTP via WhatsApp.
-   * Enforces rate-limiting and verifies presence on WhatsApp.
-   */
-  dispatchVerification(phone: string, ipAddress: string): Promise<void>;
+  // 2. Validate existence on WhatsApp to avoid wasting provider API quotas
+  const isValidWhatsApp = await whatsappProvider.checkNumberPresence(phone);
+  if (!isValidWhatsApp) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'This number is not registered on WhatsApp. Please provide an active number.',
+    });
+  }
 
-  /**
-   * Validates a user-provided OTP, handling attempt decrements.
-   * On success, issues a temporary signed session for onboarding continuation.
-   */
-  verifyCode(phone: string, code: string): Promise<OTPValidationResult>;
+  try {
+    // 3. Generate secure code (crypto) and dispatch via messaging queue
+    const otpCode = crypto.randomInt(100000, 999999).toString();
+    await whatsappProvider.sendMessage(phone, `Your verification code is: ${otpCode}. It expires in 10 minutes.`);
+
+    // 4. Save state & apply cooldown only after a successful provider dispatch
+    await Promise.all([
+      db.saveOtpSession(phone, hash(otpCode), { expiresIn: '10m' }),
+      kvStore.set(rateLimitKey, 'locked', 'EX', 60), // 60s cooldown
+    ]);
+    
+  } catch (providerError) {
+    // 5. Graceful degradation: log the real error but return a safe HTTP 502 to the client
+    logger.error(`[OTP Dispatch] Vendor failure for ${maskPhone(phone)}`, providerError);
+    
+    throw createError({
+      statusCode: 502,
+      statusMessage: 'We are experiencing temporary issues sending the code. Please try again later.',
+    });
+  }
 }
 ```
 
