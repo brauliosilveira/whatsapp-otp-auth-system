@@ -1,21 +1,30 @@
 # WhatsApp OTP Auth System
 
-A production-oriented onboarding and authentication flow powered by WhatsApp OTP, built to reduce signup friction, improve lead quality, verify that the user actually controls the submitted phone number, and provision free-trial accounts inside a multi-tenant SaaS product centered around WhatsApp operations.
+A production-grade onboarding and identity-verification flow built around WhatsApp OTP, designed to improve conversion, validate real phone ownership, and provision free-trial accounts inside a multi-tenant SaaS platform.
 
-This public repository exists as a portfolio case study. It showcases the product thinking, architecture, UX decisions, and implementation strategy behind the feature. The full source code is intentionally kept private.
+This repository is presented as a public portfolio case study for recruiters, hiring managers, and founders evaluating product-minded engineering work. It highlights the product strategy, system design, onboarding UX, and reliability considerations behind the feature, while keeping the full source code private for commercial and security reasons.
 
 ## Executive Summary
 
-This project turns a free-trial landing page into a validated onboarding funnel:
+This project rethinks trial activation as a trust-building onboarding system rather than a basic signup form.
+
+Instead of collecting a large set of fields upfront, the flow starts with the smallest possible commitment: name and WhatsApp number. From there, the system validates whether the number is actually on WhatsApp, delivers a one-time password through the same channel, and only then reveals the remaining account-creation steps.
+
+That sequence improves two things at once:
+
+- conversion, by reducing first-step friction;
+- trust, by verifying that the user actually controls the submitted number.
+
+From a product and engineering perspective, the flow was designed to:
 
 - The user submits their name and WhatsApp number.
-- The system validates whether that number is actually registered on WhatsApp.
-- A 6-digit OTP is delivered through WhatsApp itself.
-- After OTP verification, the user completes the company signup form.
-- The backend provisions a trial account, creates the tenant, and prepares activation.
-- The user creates a password and enters the product within the same onboarding journey.
+- reduce signup friction at the top of the funnel;
+- verify real ownership of the submitted WhatsApp number;
+- increase completion rates through progressive step-based onboarding;
+- provision the trial tenant only after meaningful verification has happened;
+- move the user directly from signup into an activated, signed-in product experience.
 
-The result is a more trustworthy, lower-friction signup flow that validates the product's real communication channel before account creation and gives the system stronger confidence that the trial user submitted a real number they actually control.
+The end result is a more credible, conversion-aware onboarding architecture that can be reused anywhere a system needs stronger confidence in phone-based identity before granting deeper access.
 
 ## The Problem
 
