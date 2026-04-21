@@ -254,7 +254,6 @@ Recommended media structure:
 - `Screenshot 3`: additional business fields
 - `Screenshot 4`: password creation step
 - `Screenshot 5`: signed-in product state plus welcome WhatsApp message
-- `Video demo`: end-to-end onboarding walkthrough
 
 ## Media Hosting and Format Recommendations
 
@@ -321,10 +320,6 @@ WhatsApp welcome message shown in the screenshot, translated to English:
 > Access the platform and save this link:  
 > https://app.botpravender.com  
 > If you have any questions, just reply here.
-
-### Video Demo
-
-[Watch the full demo](https://github.com/user-attachments/assets/your-video-id)
 
 ### Suggested Asset Structure
 
