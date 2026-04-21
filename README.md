@@ -255,32 +255,6 @@ Recommended media structure:
 - `Screenshot 4`: password creation step
 - `Screenshot 5`: signed-in product state plus welcome WhatsApp message
 
-## Media Hosting and Format Recommendations
-
-For a GitHub portfolio repository, the recommended setup is:
-
-- screenshots stored inside the repository under `./media/`;
-- video hosted as either a GitHub attachment URL or an unlisted YouTube link.
-
-Recommended image format:
-
-- `PNG` for UI screenshots;
-- `WEBP` if you want smaller files with good visual quality.
-
-Recommended image size:
-
-- width between `1440px` and `1600px` for desktop screenshots;
-- around `1080px` width if you are exporting narrower step-focused screens;
-- ideally between `200 KB` and `800 KB` per image.
-
-Recommended video format:
-
-- `MP4`
-- `1280x720`
-- `30s` to `90s`
-
-Avoid committing large video files directly into the repository unless they are very small. For GitHub portfolio purposes, links usually work better than storing the raw video in git.
-
 ## Media Placeholders
 
 Use this section as soon as the assets are uploaded to the repository or attached through GitHub-friendly URLs.
