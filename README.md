@@ -4,7 +4,7 @@ A production-grade onboarding and identity-verification flow built around WhatsA
 
 This repository is presented as a public portfolio case study for recruiters, hiring managers, and founders evaluating product-minded engineering work. It highlights the product strategy, system design, onboarding UX, and reliability considerations behind the feature, while keeping the full source code private for commercial and security reasons.
 
-📺 **[Watch a 3-minute Video Tour of the Architecture & Flow](#)** *(Add your Loom link here!)*
+📺 **[Watch a 3-minute Video Tour of the Architecture & Flow](#)**
 
 🌐 **[View the Live Project](https://botpravender.com/teste)**
 
