@@ -379,3 +379,8 @@ I designed and implemented this feature end-to-end, including:
 ## Contact
 
 If you would like a live walkthrough or want to discuss product engineering, backend architecture, SaaS onboarding, or full-stack roles, feel free to reach out.
+
+- Website: https://www.brauliosilveira.com
+- LinkedIn: https://linkedin.com/in/brauliosilveira
+- Email: contact@brauliosilveira.com
+- YouTube: https://youtube.com/@venderpelowhats
