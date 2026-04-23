@@ -6,6 +6,8 @@ This repository is presented as a public portfolio case study for recruiters, hi
 
 📺 **[Watch a 3-minute Video Tour of the Architecture & Flow](#)** *(Add your Loom link here!)*
 
+🌐 **[View the Live Project](https://botpravender.com/teste)**
+
 ## Executive Summary
 
 This project rethinks trial activation as a trust-building onboarding system rather than a basic signup form.
@@ -289,10 +291,6 @@ export async function dispatchWhatsAppOtp(phone: string, clientIp: string): Prom
 ```
 
 ## Demo and Media
-
-Live project:
-
-- https://botpravender.com/teste
 
 This repository is meant to be supported by visual proof of execution. I will add:
 
