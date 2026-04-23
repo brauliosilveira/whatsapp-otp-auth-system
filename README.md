@@ -382,5 +382,5 @@ If you would like a live walkthrough or want to discuss product engineering, bac
 
 - Website: https://www.brauliosilveira.com
 - LinkedIn: https://linkedin.com/in/brauliosilveira
-- Email: contact@brauliosilveira.com
+- Email: hi@brauliosilveira.com
 - YouTube: https://youtube.com/@venderpelowhats
